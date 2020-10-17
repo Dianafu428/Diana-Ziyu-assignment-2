@@ -1,8 +1,16 @@
 import random
 import string
+import urllib.request
+
+# input the url of The Lady with the Camellias
+url = 'http://www.gutenberg.org/files/1608/1608-0.txt'
+response = urllib.request.urlopen(url)
+data = response.read()  # a `bytes` object
+text1 = data.decode('utf-8')
+# print(text) for testing
 
 
-def process_file(filename, skip_header):
+def process_file(text, skip_header):
     """Makes a histogram that contains the words from a file.
 
     filename: string
@@ -11,14 +19,13 @@ def process_file(filename, skip_header):
     returns: map from each word to the number of times it appears.
     """
     hist = {}
-    fp = open(filename, encoding='UTF8')
 
     if skip_header:
-        skip_gutenberg_header(fp)
+        skip_gutenberg_header(text)
 
     strippables = string.punctuation + string.whitespace
 
-    for line in fp:
+    for line in text.split('/n'):
         if line.startswith('*** END OF THIS PROJECT'):
             break
 
@@ -35,12 +42,12 @@ def process_file(filename, skip_header):
     return hist
 
 
-def skip_gutenberg_header(fp):
+def skip_gutenberg_header(text):
     """Reads from fp until it finds the line that ends the header.
 
     fp: open file object
     """
-    for line in fp:
+    for line in text:
         if line.startswith('*** START OF THIS PROJECT'):
             break
 
@@ -51,10 +58,6 @@ def total_words(hist):
     for v in hist.values():
         result += v
     return result
-    # return sum(hist.values())
-
-# d = {'a': 20, 'b': 10}
-# print(total_words(d))
 
 
 def different_words(hist):
@@ -85,12 +88,14 @@ def most_common(hist, excluding_stopwords=False):
     for word, freq in hist.items():
         if word in stop_words:
             hist[word] = None
+        elif word == 'marguerite':
+            hist[word] = None
         else:
             t = (freq, word)
             common_words.append(t)
-    
-    common_words.sort(reverse = True)
-    
+
+    common_words.sort(reverse=True)
+
     return common_words
 
 
@@ -106,38 +111,17 @@ def print_most_common(hist, num=10):
         print(word, '\t', freq)
 
 
-
-def random_word(hist):
-    """Chooses a random word from a histogram.
-
-    The probability of each word is proportional to its frequency.
-    """
-    # create a list
-    random_list = []
-    # choose a word in hist.items with extend
-    for word, freq in hist.items():
-        random_list.extend([word] * freq)
-    
-    return random.choice(random_list)
-    
-
-
 def main():
-    hist = process_file('data/Pride and Prejudice.txt', skip_header=True)
+    hist1 = process_file(text1, skip_header=True)
     # print(hist)
-    print('Total number of words:', total_words(hist))
-    print('Number of different words:', different_words(hist))
+    print('Total number of words of The Lady with the Camellias:', total_words(hist1))
+    print('Number of different words of The Lady with the Camellias:',
+          different_words(hist1))
 
-    t = most_common(hist, excluding_stopwords=True)
-    print('The most common words are:')
-    for freq, word in t[0:20]:
+    t = most_common(hist1, excluding_stopwords=True)
+    print('The most common words in The Lady with the Camellias are:')
+    for freq, word in t[0:10]:
         print(word, '\t', freq)
-
-    # words = process_file('data/words.txt', skip_header=False)
-
-    # print("\n\nHere are some random words from the book")
-    # for i in range(100):
-    #     print(random_word(hist), end=' ')
 
 
 if __name__ == '__main__':
