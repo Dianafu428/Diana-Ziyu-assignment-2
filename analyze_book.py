@@ -106,19 +106,6 @@ def print_most_common(hist, num=10):
         print(word, '\t', freq)
 
 
-def subtract(d1, d2):
-    """Returns a dictionary with all keys that appear in d1 but not d2.
-
-    d1, d2: dictionaries
-    """
-    # create a new dictionary
-    d = {}
-    # for key in d1, if key also in d2, return key as None
-    for key in d1:
-        if key in d2:
-            d[key] = None
-    return d
-
 
 def random_word(hist):
     """Chooses a random word from a histogram.
@@ -147,11 +134,6 @@ def main():
         print(word, '\t', freq)
 
     # words = process_file('data/words.txt', skip_header=False)
-
-    # diff = subtract(hist, words)
-    # print("The words in the book that aren't in the word list are:")
-    # for word in diff.keys():
-    #     print(word, end=' ')
 
     # print("\n\nHere are some random words from the book")
     # for i in range(100):
