@@ -2,11 +2,11 @@ import random
 import string
 import urllib.request
 
-# input the url of The Lady with the Camellias
-url = 'http://www.gutenberg.org/files/1608/1608-0.txt'
+# input the url of Camellias
+url = 'https://dev.gutenberg.org/files/1608/1608-0.txt'
 response = urllib.request.urlopen(url)
 data = response.read()  # a `bytes` object
-text1 = data.decode('utf-8')
+text = data.decode('utf-8')
 # print(text) for testing
 
 
@@ -112,14 +112,14 @@ def print_most_common(hist, num=10):
 
 
 def main():
-    hist1 = process_file(text1, skip_header=True)
+    hist = process_file(text, skip_header=True)
     # print(hist)
-    print('Total number of words of The Lady with the Camellias:', total_words(hist1))
-    print('Number of different words of The Lady with the Camellias:',
-          different_words(hist1))
+    print('Total number of words of Camille :', total_words(hist))
+    print('Number of different words of Camille :',
+          different_words(hist))
 
-    t = most_common(hist1, excluding_stopwords=True)
-    print('The most common words in The Lady with the Camellias are:')
+    t = most_common(hist, excluding_stopwords=True)
+    print('The most common words in Camille are:')
     for freq, word in t[0:10]:
         print(word, '\t', freq)
 

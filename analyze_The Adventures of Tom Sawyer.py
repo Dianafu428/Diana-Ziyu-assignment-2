@@ -6,7 +6,7 @@ import urllib.request
 url = 'https://dev.gutenberg.org/files/74/74-0.txt'
 response = urllib.request.urlopen(url)
 data = response.read()  # a `bytes` object
-text1 = data.decode('utf-8')
+text = data.decode('utf-8')
 # print(text) for testing
 
 
@@ -112,13 +112,13 @@ def print_most_common(hist, num=10):
 
 
 def main():
-    hist1 = process_file(text1, skip_header=True)
+    hist = process_file(text, skip_header=True)
     # print(hist)
-    print('Total number of words of The Adventures of Tom Sawyer:', total_words(hist1))
+    print('Total number of words of The Adventures of Tom Sawyer:', total_words(hist))
     print('Number of different words of The Adventures of Tom Sawyer:',
-          different_words(hist1))
+          different_words(hist))
 
-    t = most_common(hist1, excluding_stopwords=True)
+    t = most_common(hist, excluding_stopwords=True)
     print('The most common words in The Adventures of Tom Sawyer are:')
     for freq, word in t[0:10]:
         print(word, '\t', freq)
