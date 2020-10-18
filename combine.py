@@ -2,7 +2,7 @@ import random
 import string
 import urllib.request
 
-# input the url of Camellias
+# input the url of Camille
 url1 = 'https://dev.gutenberg.org/files/1608/1608-0.txt'
 response1 = urllib.request.urlopen(url1)
 data1 = response1.read()  # a `bytes` object
@@ -13,7 +13,7 @@ response2 = urllib.request.urlopen(url2)
 data2 = response2.read()  # a `bytes` object
 text2 = data2.decode('utf-8')
 
-
+# process the file
 def process_file(text, skip_header):
     """Makes a histogram that contains the words from a file.
 
@@ -55,6 +55,7 @@ def skip_gutenberg_header(text):
         if line.startswith('*** START OF THIS PROJECT'):
             break
 
+# words frequencies
 
 def total_words(hist):
     """Returns the total of the frequencies in a histogram."""
@@ -68,7 +69,8 @@ def different_words(hist):
     """Returns the number of different words in a histogram."""
     return len(hist)
 
-
+# computing summary statistics
+# find the most common words in books
 def most_common(hist, excluding_stopwords=False):
     """Makes a list of word-freq pairs in descending order of frequency.
 
@@ -177,3 +179,34 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+print('\n')
+# Natural Language Processing
+
+# Sentiment Analysis
+ 
+import nltk
+# nltk.download('vader_lexicon')
+
+def download_book(url):
+    """
+    Download the book from Gutenberg by using the url of the book
+    return: a string
+    """
+    response = urllib.request.urlopen(url)
+    data = response.read()  # a `bytes` object
+    text = data.decode('utf-8')
+    return text
+
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+url_Camille = 'https://dev.gutenberg.org/files/1608/1608-0.txt'
+text1 = download_book(url_Camille)
+url_Tom = 'https://dev.gutenberg.org/files/74/74-0.txt'
+text2 = download_book(url_Tom)
+
+score1 = SentimentIntensityAnalyzer().polarity_scores(text1)
+score2 = SentimentIntensityAnalyzer().polarity_scores(text2)
+
+print(score1)
+print(score2)

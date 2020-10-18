@@ -2,7 +2,7 @@ import random
 import string
 import urllib.request
 
-# input the url of Camellias
+# input the url of Camille
 url = 'https://dev.gutenberg.org/files/1608/1608-0.txt'
 response = urllib.request.urlopen(url)
 data = response.read()  # a `bytes` object
