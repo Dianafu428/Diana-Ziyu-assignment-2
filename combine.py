@@ -125,7 +125,7 @@ def subtract(d1, d2):
     d = {}
     # for key in d1, if key also in d2, return key as None
     for key in d1:
-        if key in d2:
+        if key not in d2:
             d[key] = None
     return d
 
@@ -140,9 +140,13 @@ def main():
           different_words(hist1))
 
     t1 = most_common(hist1, excluding_stopwords=True)
+    d1 = {}
     print('The most common words in Camille are:')
     for freq, word in t1[0:10]:
         print(word, '\t', freq)
+    
+    for freq, word in t1[0:100]:
+        d1[word] = d1.get(word, 0) + 1
     
     # print the result for The Adventures of Tom Sawyer
     print('Total number of words of The Adventures of Tom Sawyer:', total_words(hist2))
@@ -150,25 +154,23 @@ def main():
           different_words(hist2))
 
     t2 = most_common(hist2, excluding_stopwords=True)
+    d2 = {}
     print('The most common words in The Adventures of Tom Sawyer are:')
     for freq, word in t2[0:10]:
+        d2[word] = d2.get(word, 0) + 1
         print(word, '\t', freq)
     
-    for word in t1[0:10]:
-        d1 = {}
-        word1 = word
-        word1.append(d1)
-        return d1
-    
-    for word in t2[0:10]:
-        d2 = {}
-        word2 = word
-        word2.append(d2)
-        return d2
+    for freq, word in t2[0:100]:
+        d2[word] = d2.get(word, 0) + 1
 
     # compare two books' similarity in words
     diff = subtract(d1, d2)
-    print("The 100 most common words in Camille that aren't in the 100 most common words in The Adventures of Tom Sawyer are:")
+    print("The words in the 100 most common words in Camille that aren't in the 100 most common words in The Adventures of Tom Sawyer are:")
+    for word in diff.keys():
+        print(word, end=' ')
+    print('\n')
+    diff = subtract(d2, d1)
+    print("The words in the 100 most common words in The Adventures of Tom Sawyer that aren't in the 100 most common words in Camille are:")
     for word in diff.keys():
         print(word, end=' ')
 
