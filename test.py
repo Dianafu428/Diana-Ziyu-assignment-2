@@ -20,34 +20,35 @@ text1 = download_book(url_Camille)
 url_Tom = 'https://dev.gutenberg.org/files/74/74-0.txt'
 text2 = download_book(url_Tom)
 
-# Program to measure the similarity between two texts using cosine similarity. 
-from nltk.corpus import stopwords 
-from nltk.tokenize import word_tokenize 
+import math
+import re
+from collections import Counter
 
-# tokenization 
-text1_list = word_tokenize(text1)  
-text2_list = word_tokenize(text2) 
+WORD = re.compile(r"\w+")
 
-# sw contains the list of stopwords
-sw = stopwords.words('english')  
-l1 =[]
-l2 =[] 
 
-# remove stop words from the string 
-text1_set = {w for w in text1_list if not w in sw}  
-text2_set = {w for w in text2_list if not w in sw} 
+def get_cosine(vec1, vec2):
+    intersection = set(vec1.keys()) & set(vec2.keys())
+    numerator = sum([vec1[x] * vec2[x] for x in intersection])
 
-# form a set containing keywords of both strings  
-rvector = text1_set.union(text2_set)  
-for w in rvector: 
-    if w in text1_set: l1.append(1) # create a vector 
-    else: l1.append(0) 
-    if w in text2_set: l2.append(1) 
-    else: l2.append(0) 
-c = 0
-  
-# cosine formula  
-for i in range(len(rvector)): 
-        c+= l1[i]*l2[i] 
-cosine = c / float((sum(l1)*sum(l2))**0.5) 
-print("similarity: ", cosine) 
+    sum1 = sum([vec1[x] ** 2 for x in list(vec1.keys())])
+    sum2 = sum([vec2[x] ** 2 for x in list(vec2.keys())])
+    denominator = math.sqrt(sum1) * math.sqrt(sum2)
+
+    if not denominator:
+        return 0.0
+    else:
+        return float(numerator) / denominator
+
+
+def text_to_vector(text):
+    words = WORD.findall(text)
+    return Counter(words)
+
+
+vector1 = text_to_vector(text1)
+vector2 = text_to_vector(text2)
+
+cosine = get_cosine(vector1, vector2)
+
+print("Cosine:", cosine)

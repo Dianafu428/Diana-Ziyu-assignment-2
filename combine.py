@@ -12,6 +12,12 @@ url2 = 'https://dev.gutenberg.org/files/74/74-0.txt'
 response2 = urllib.request.urlopen(url2)
 data2 = response2.read()  # a `bytes` object
 text2 = data2.decode('utf-8')
+# input the url of The Secret Garden
+url3 = 'http://www.gutenberg.org/files/113/113-0.txt'
+response3 = urllib.request.urlopen(url3)
+data3 = response3.read()  # a `bytes` object
+text3 = data3.decode('utf-8')
+
 
 # process the file
 def process_file(text, skip_header):
@@ -135,6 +141,7 @@ def subtract(d1, d2):
 def main():
     hist1 = process_file(text1, skip_header=True)
     hist2 = process_file(text2, skip_header=True)
+    hist3 = process_file(text3, skip_header=True)
 
     # print the result for Camille
     print('Total number of words of Camille :', total_words(hist1))
@@ -159,13 +166,27 @@ def main():
     d2 = {}
     print('The most common words in The Adventures of Tom Sawyer are:')
     for freq, word in t2[0:10]:
-        d2[word] = d2.get(word, 0) + 1
         print(word, '\t', freq)
 
     for freq, word in t2[0:100]:
         d2[word] = d2.get(word, 0) + 1
 
-    # compare two books' similarity in words
+# print the result for The Secret Garden
+    print('Total number of words of The Secret Garden:', total_words(hist3))
+    print('Number of different words of The Secret Garden:',
+          different_words(hist3))
+
+    t3 = most_common(hist3, excluding_stopwords=True)
+    d3 = {}
+    print('The most common words in The Secret Garden are:')
+    for freq, word in t3[0:10]:
+        print(word, '\t', freq)
+
+    for freq, word in t3[0:100]:
+        d3[word] = d3.get(word, 0) + 1
+
+
+    # compare two books' similarity in words (only compare the first two books, the third book is used for the similarity part)
     diff = subtract(d1, d2)
     print("The words in the 100 most common words in Camille that aren't in the 100 most common words in The Adventures of Tom Sawyer are:")
     for word in diff.keys():
@@ -204,9 +225,12 @@ url_Camille = 'https://dev.gutenberg.org/files/1608/1608-0.txt'
 text1 = download_book(url_Camille)
 url_Tom = 'https://dev.gutenberg.org/files/74/74-0.txt'
 text2 = download_book(url_Tom)
+url_Garden = 'http://www.gutenberg.org/files/113/113-0.txt'
+text3 = download_book(url_Garden)
 
 score1 = SentimentIntensityAnalyzer().polarity_scores(text1)
 score2 = SentimentIntensityAnalyzer().polarity_scores(text2)
+score3 = SentimentIntensityAnalyzer().polarity_scores(text3)
 
 # print(score1)
 # print(score2)
@@ -235,6 +259,7 @@ def sentiment_analysis(d):
 
 sentiment_analysis(score1)
 sentiment_analysis(score2)
+sentiment_analysis(score3)
 
 # Program to measure the similarity between two texts using cosine similarity. 
 from nltk.corpus import stopwords 
@@ -256,10 +281,14 @@ text2_set = {w for w in text2_list if not w in sw}
 # form a set containing keywords of both strings  
 rvector = text1_set.union(text2_set)  
 for w in rvector: 
-    if w in text1_set: l1.append(1) # create a vector 
-    else: l1.append(0) 
-    if w in text2_set: l2.append(1) 
-    else: l2.append(0) 
+    if w in text1_set: 
+        l1.append(1) # create a vector 
+    else: 
+        l1.append(0) 
+    if w in text2_set: 
+        l2.append(1) 
+    else: 
+        l2.append(0) 
 c = 0
   
 # cosine formula  
