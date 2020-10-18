@@ -22,15 +22,17 @@ url_Camille = 'https://dev.gutenberg.org/files/1608/1608-0.txt'
 text1 = download_book(url_Camille)
 url_Tom = 'https://dev.gutenberg.org/files/74/74-0.txt'
 text2 = download_book(url_Tom)
-url_Oliver = 'http://www.gutenberg.org/cache/epub/730/pg730.txt'
-text3 = download_book(url_Oliver)
+# url_Oliver = 'http://www.gutenberg.org/cache/epub/730/pg730.txt'
+# text3 = download_book(url_Oliver)
+url_Alice = 'http://www.gutenberg.org/files/11/11-0.txt'
+text3 = download_book(url_Alice)
 
 # Program to measure the similarity between two texts using cosine similarity. 
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize 
 
 # tokenization 
-text1_list = word_tokenize(text1)  
+text1_list = word_tokenize(text2)  
 text2_list = word_tokenize(text3) 
 
 # sw contains the list of stopwords
@@ -60,3 +62,27 @@ for i in range(len(rvector)):
         c+= l1[i]*l2[i] 
 cosine = c / float((sum(l1)*sum(l2))**0.5) 
 print("similarity: ", cosine) 
+
+import numpy as np
+from sklearn.manifold import MDS
+import matplotlib.pyplot as plt
+
+# these are the similarities computed from the previous section
+S = np.asarray([[1., 0.44466285622087914, 0.4459925331004415],
+    [0.44466285622087914, 1., 0.4073419782971952],
+    [0.4459925331004415, 0.4073419782971952, 1]])
+
+# dissimilarity is 1 minus similarity
+dissimilarities = 1 - S
+
+# compute the embedding
+coord = MDS(dissimilarity='precomputed').fit_transform(dissimilarities)
+
+plt.scatter(coord[:, 0], coord[:, 1])
+
+# Label the points
+for i in range(coord.shape[0]):
+    plt.annotate(str(i), (coord[i, :]))
+
+
+plt.show()
