@@ -2,6 +2,7 @@ import urllib.request
 import string
 import random
 import nltk
+# nltk.download('all')
 # nltk.download('vader_lexicon')
 
 def download_book(url):
@@ -14,40 +15,39 @@ def download_book(url):
     text = data.decode('utf-8')
     return text
 
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
 url_Camille = 'https://dev.gutenberg.org/files/1608/1608-0.txt'
 text1 = download_book(url_Camille)
 url_Tom = 'https://dev.gutenberg.org/files/74/74-0.txt'
 text2 = download_book(url_Tom)
 
-score1 = SentimentIntensityAnalyzer().polarity_scores(text1)
-score2 = SentimentIntensityAnalyzer().polarity_scores(text2)
+# Program to measure the similarity between two texts using cosine similarity. 
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize 
 
-# print(score1)
-# print(score2)
+# tokenization 
+text1_list = word_tokenize(text1)  
+text2_list = word_tokenize(text2) 
 
-def sentiment_analysis(d):
-    '''
-    Takes in an argument: d: a dictionary that contains pos, neg, neu, and compound scores 
-    Prints the sentiment analysis result
-    '''
-    print("Overall sentiment dictionary is : ", d) 
-    print("sentence was rated as ", d['neg']*100, "% Negative") 
-    print("sentence was rated as ", d['neu']*100, "% Neutral") 
-    print("sentence was rated as ", d['pos']*100, "% Positive") 
+# sw contains the list of stopwords
+sw = stopwords.words('english')  
+l1 =[]
+l2 =[] 
 
-    print("Sentence Overall Rated As", end = " ") 
-    
-    # decide overall sentiment as positive, negative and neutral by using the value of compound
-    if d['compound'] >= 0.05 : 
-        print("Positive") 
-    
-    elif d['compound'] <= - 0.05 : 
-        print("Negative") 
-    
-    else : 
-        print("Neutral")
+# remove stop words from the string 
+text1_set = {w for w in text1_list if not w in sw}  
+text2_set = {w for w in text2_list if not w in sw} 
 
-sentiment_analysis(score1)
-sentiment_analysis(score2)
+# form a set containing keywords of both strings  
+rvector = text1_set.union(text2_set)  
+for w in rvector: 
+    if w in text1_set: l1.append(1) # create a vector 
+    else: l1.append(0) 
+    if w in text2_set: l2.append(1) 
+    else: l2.append(0) 
+c = 0
+  
+# cosine formula  
+for i in range(len(rvector)): 
+        c+= l1[i]*l2[i] 
+cosine = c / float((sum(l1)*sum(l2))**0.5) 
+print("similarity: ", cosine) 
