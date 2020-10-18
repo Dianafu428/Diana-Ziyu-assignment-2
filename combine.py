@@ -144,10 +144,10 @@ def main():
     print('The most common words in Camille are:')
     for freq, word in t1[0:10]:
         print(word, '\t', freq)
-    
+
     for freq, word in t1[0:100]:
         d1[word] = d1.get(word, 0) + 1
-    
+
     # print the result for The Adventures of Tom Sawyer
     print('Total number of words of The Adventures of Tom Sawyer:', total_words(hist2))
     print('Number of different words of The Adventures of Tom Sawyer:',
@@ -159,7 +159,7 @@ def main():
     for freq, word in t2[0:10]:
         d2[word] = d2.get(word, 0) + 1
         print(word, '\t', freq)
-    
+
     for freq, word in t2[0:100]:
         d2[word] = d2.get(word, 0) + 1
 
