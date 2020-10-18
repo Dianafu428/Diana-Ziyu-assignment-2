@@ -114,6 +114,7 @@ def print_most_common(hist, num):
     for freq, word in t[0:num]:
         print(word, '\t', freq)
 
+
 # use the subtract to compare two books
 def subtract(d1, d2):
     """Returns a dictionary with all keys that appear in d1 but not d2.
@@ -132,6 +133,7 @@ def subtract(d1, d2):
 def main():
     hist1 = process_file(text1, skip_header=True)
     hist2 = process_file(text2, skip_header=True)
+
     # print the result for Camille
     print('Total number of words of Camille :', total_words(hist1))
     print('Number of different words of Camille :',
@@ -152,11 +154,24 @@ def main():
     for freq, word in t2[0:10]:
         print(word, '\t', freq)
     
-    # # compare two books' similarity in words
-    # diff = subtract(d1, d2)
-    # print("The 100 most common words in Camille that aren't in the 100 most common words in The Adventures of Tom Sawyer are:")
-    # for word in diff.keys():
-    #     print(word, end=' ')
+    for word in t1[0:10]:
+        d1 = {}
+        word1 = word
+        word1.append(d1)
+        return d1
+    
+    for word in t2[0:10]:
+        d2 = {}
+        word2 = word
+        word2.append(d2)
+        return d2
+
+    # compare two books' similarity in words
+    diff = subtract(d1, d2)
+    print("The 100 most common words in Camille that aren't in the 100 most common words in The Adventures of Tom Sawyer are:")
+    for word in diff.keys():
+        print(word, end=' ')
+
 
 if __name__ == '__main__':
     main()
