@@ -26,14 +26,22 @@ text2 = download_book(url_Tom)
 # text3 = download_book(url_Oliver)
 url_Alice = 'http://www.gutenberg.org/files/11/11-0.txt'
 text3 = download_book(url_Alice)
+url_Finn = 'http://www.gutenberg.org/files/76/76-0.txt'
+text4 = download_book(url_Finn)
+url_Pudd = 'http://www.gutenberg.org/files/102/102-0.txt'
+text5 = download_book(url_Pudd)
+url_Prince = 'http://www.gutenberg.org/files/1837/1837-0.txt'
+text6 = download_book(url_Prince)
+url_Glass = 'http://www.gutenberg.org/files/12/12-0.txt'
+text7 = download_book(url_Glass)
 
 # Program to measure the similarity between two texts using cosine similarity. 
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize 
 
 # tokenization 
-text1_list = word_tokenize(text2)  
-text2_list = word_tokenize(text3) 
+text1_list = word_tokenize(text6)  
+text2_list = word_tokenize(text7) 
 
 # sw contains the list of stopwords
 sw = stopwords.words('english')  
@@ -68,9 +76,13 @@ from sklearn.manifold import MDS
 import matplotlib.pyplot as plt
 
 # these are the similarities computed from the previous section
-S = np.asarray([[1., 0.44466285622087914, 0.4459925331004415],
-    [0.44466285622087914, 1., 0.4073419782971952],
-    [0.4459925331004415, 0.4073419782971952, 1]])
+S = np.asarray([[1., 0.44466285622087914, 0.4459925331004415, 0.373839884087373, 0.446374418830339, 0.439693491778613, 0.458404637313088],
+    [0.44466285622087914, 1., 0.4073419782971952, 0.453664762151034, 0.476688725908798, 0.473917497554727, 0.415425473553053], 
+    [0.4459925331004415, 0.4073419782971952, 1, 0.388594248654620, 0.398433457552459, 0.396344271072345, 0.556547187188917],
+    [0.373839884087373, 0.453664762151034, 0.388594248654620, 1., 0.407812645850923, 0.372860849117610, 0.400128625380280],
+    [0.446374418830339, 0.476688725908798, 0.398433457552459, 0.407812645850923, 1, 0.452992594884041, 0.395325987962274],
+    [0.439693491778613, 0.473917497554727, 0.396344271072345, 0.372860849117610, 0.452992594884041, 1, 0.401580397822096], 
+    [0.458404637313088, 0.415425473553053, 0.556547187188917, 0.400128625380280, 0.395325987962274, 0.401580397822096, 1]])
 
 # dissimilarity is 1 minus similarity
 dissimilarities = 1 - S
